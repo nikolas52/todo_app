@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+{% block title %}To-Do List{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f9fafb;
+            margin: 0;
+            padding: 20px;
+        }
+        .todo-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            text-align: center;
+            margin: 0 0 20px;
+        }
+        form {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #2563eb;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            background-color: #f9fafb;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            animation: fadeIn 0.3s ease-in;
+        }
+        li.completed {
+            background-color: #e5e7eb;
+            text-decoration: line-through;
+            color: #6b7280;
+        }
+        .task-actions {
+            display: flex;
+            gap: 8px;
+        }
+        a {
+            font-size: 0.8rem;
+            text-decoration: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .toggle-link {
+            color: #3b82f6;
+        }
+        .toggle-link:hover {
+            background-color: #dbeafe;
+        }
+        .delete-link {
+            color: #ef4444;
+        }
+        .delete-link:hover {
+            background-color: #fee2e2;
+        }
+        p {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 600px) {
+            .todo-container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.3rem;
+            }
+            form {
+                flex-direction: column;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="todo-container">
+        <h1>Moje zadania</h1>
+        <form method="post" action="{{ path('app_todo_add') }}">
+            <input type="text" name="task_name" placeholder="Nowe zadanie" required>
+            <button type="submit">Dodaj</button>
+        </form>
+        {% if tasks|length > 0 %}
+            <ul>
+                {% for task in tasks %}
+                    <li {% if task.completed %}class="completed"{% endif %}>
+                        {{ task.name }}
+                        <div class="task-actions">
+                            <a href="{{ path('app_todo_toggle', {'id': task.id}) }}" class="toggle-link">
+                                {% if task.completed %}Nieukończone{% else %}Ukończone{% endif %}
+                            </a>
+                            <a href="{{ path('app_todo_delete', {'id': task.id}) }}" class="delete-link">Usuń</a>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Brak zadań do zrobienia</p>
+        {% endif %}
+    </div>
+{% endblock %}
