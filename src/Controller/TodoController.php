@@ -47,4 +47,11 @@ class TodoController extends AbstractController
         $session->set('tasks', $tasks);
         return $this->redirectToRoute('app_todo');
     }
+
+    #[Route('/todo/clear', name: 'app_todo_clear')]
+    public function clear(SessionInterface $session): Response
+    {
+        $session->set('tasks',[]);
+        return $this->redirectToRoute('app_todo');
+    }
 }
