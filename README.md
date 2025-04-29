@@ -19,7 +19,7 @@ This is a simple To-Do List web application built with **Symfony 6+**. It allows
 ## 🛠 Installation
 
 ```bash
-git clone https://github.com/your-username/todo-symfony-app.git
+git clone https://github.com/nikolas52/todo-symfony-app.git
 cd todo-symfony-app
 composer install
 symfony server:start
